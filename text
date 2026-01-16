@@ -1,0 +1,34 @@
+import ollama from 'ollama'
+
+
+const userInput = document.getElementById("userInput")
+const sendButton = document.getElementById("sendButton")
+const chatBox = document.getElementById("chatBox")
+
+sendButton.addEventListener("click", async () => {
+  const userMessage = userInput.value()
+
+
+    if (!userMessage) return
+    chatBox.innerHTML += `<p><strong>You:</strong> ${userMessage}</p>`
+
+    try{
+        const response = await ollama.chat({
+        model: 'llama2:latest',
+        messages: [{ role: 'user', content: userMessage }],
+        stream: true,
+        })
+
+        chatBox.innerHTML += `<p><strong>AI:</strong> ${response.message.content}</p>`
+
+        userInput.value = ''
+    } catch (error) {
+        console.error('Error communicating with the model:', error)
+        chatBox.innerHTML += `<p><strong>Error:</strong> Could not get a response from the model.</p>`
+    }
+    console.log(response.message.content)
+})
+console.log("hello")
+console.log(userInput)
+
+
