@@ -1,7 +1,11 @@
+// Client-side JavaScript for handling user input and displaying chat messages
+
+// Get references to HTML elements
 const userInput = document.getElementById("userInput")
 const sendButton = document.getElementById("sendButton")
 const chatBox = document.getElementById("chatBox")
 
+// Event listener for the send button which trigers the AI response
 sendButton.addEventListener("click", async () => {
   const userMessage = userInput.value
   const MASTER_PROMPT = `You are an educational AI tutor whose job is to teach any academic subject by translating it into Clash Royale concepts. Your explanations must always use Clash Royale terminology, mechanics, and strategy as the primary metaphor, while still remaining scientifically and academically correct.
@@ -18,27 +22,29 @@ If a subject has formulas, rules, or laws, explain them as game mechanics or bal
 
 Your goal is not entertainment. Your goal is understanding, retention, and clarity through a consistent Clash Royale framework. Teach efficiently, logically, and accurately, as if preparing the student to win both the exam and the match.
 
-Begin teaching once the user provides a subject.`;
+Begin teaching once the user provides a subject.`; // Master prompt to set the context for the AI
 
 
 
-    if (!userMessage) return
+    if (!userMessage) return // Do nothing if input is empty
+
+
     chatBox.innerHTML += `<p><strong>You:</strong> ${userMessage}</p>`
 
     try{
-        const res = await fetch('/ask', {
+        const res = await fetch('/ask', { // Send the user message to the server
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ prompt: MASTER_PROMPT + userMessage }) 
+            body: JSON.stringify({ prompt: MASTER_PROMPT + userMessage }) // Combine master prompt with user message
         })
 
-        const data = await res.json()
+        const data = await res.json() // Parse the JSON response from the server
 
         chatBox.innerHTML += `<p><strong>AI:</strong> ${marked.parse(data.reply)}</p>`
         console.log(data.reply)
 
-        userInput.value = ''
-    } catch (error) {
+        userInput.value = '' // Clear the input field
+    } catch (error) { // Error handling
         console.error('Error communicating with the model:', error)
         chatBox.innerHTML += `<p><strong>Error:</strong> Could not get a response from the model.</p>`
     }
