@@ -11,7 +11,7 @@ const port = 3000
 app.use(express.json())
 
 app.post('/ask', async (req, res) => {
-    console.log('Received prompt:', req.body.prompt);
+  console.log('Received prompt:', req.body.prompt);
   const userPrompt = req.body.prompt;
   try{
     const response = await ollama.chat({
