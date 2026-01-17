@@ -34,7 +34,7 @@ Begin teaching once the user provides a subject.`;
 
         const data = await res.json()
 
-        chatBox.innerHTML += `<p><strong>AI:</strong> ${data.reply}</p>`
+        chatBox.innerHTML += `<p><strong>AI:</strong> ${marked.parse(data.reply)}</p>`
         console.log(data.reply)
 
         userInput.value = ''
