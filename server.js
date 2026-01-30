@@ -21,7 +21,7 @@ app.post('/ask', async (req, res) => {
   const userPrompt = req.body.prompt;
   try{
     const response = await ollama.chat({
-        model: 'llama2:latest',
+        model: 'phi3:mini',
         messages: [{ role: 'user', content: userPrompt }],
     })
 
